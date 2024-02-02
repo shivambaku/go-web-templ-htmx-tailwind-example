@@ -1,0 +1,12 @@
+package user
+
+import (
+	"github.com/shivambaku/fuufu-app/layouts"
+	"github.com/shivambaku/fuufu-app/models"
+)
+
+templ Show(user model.User) {
+	@layout.Base() {
+		<h1>Hello, { user.Email } !</h1>
+	}
+}

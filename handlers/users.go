@@ -2,7 +2,7 @@ package handler
 
 import (
 	model "github.com/shivambaku/fuufu-app/models"
-	"github.com/shivambaku/fuufu-app/views/user"
+	user "github.com/shivambaku/fuufu-app/views/users"
 
 	"github.com/labstack/echo"
 )

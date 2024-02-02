@@ -1,6 +1,8 @@
-run:
-	@templ generate
-	@go run cmd/main.go
+run: templ
+	@go run .
+
+air:
+	@air
 
 templ:
 	@templ generate

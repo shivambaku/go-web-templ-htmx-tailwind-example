@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-func handlerUserShow(c echo.Context) error {
+func HandlerUserShow(c echo.Context) error {
 	u := model.User{
 		Email: "user@example.com",
 	}

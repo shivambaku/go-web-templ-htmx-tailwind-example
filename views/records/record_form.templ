@@ -3,12 +3,10 @@ package record
 import "github.com/shivambaku/fuufu-app/layouts"
 
 templ RecordForm() {
-	@layout.Base() {
-		<form>
-			<select>
-				<option value="Anime">Anime</option>
-				<option value="Calories">Calories</option>
-			</select>
-		</form>
+	@layout.Default() {
+		<select>
+			<option value="Anime">Anime</option>
+			<option value="Calories">Calories</option>
+		</select>
 	}
 }

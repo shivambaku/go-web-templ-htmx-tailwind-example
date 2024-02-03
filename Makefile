@@ -1,11 +1,18 @@
-run: templ
+run: templ tailwind
 	@go run .
 
-air:
-	@air
+build: templ tailwind
+	@go build -o ./tmp/ .
+
+tailwind:
+	@npx tailwindcss -i ./assets/css/tailwind.css -o ./assets/dist/styles.css --minify
 
 templ:
 	@templ generate
+
+watch:
+	@air & \
+	npx tailwindcss -i ./assets/css/tailwind.css -o ./assets/dist/styles.css --watch
 
 lint:
 	@golangci-lint run

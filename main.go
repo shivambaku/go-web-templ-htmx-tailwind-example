@@ -6,7 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
-	handler "github.com/shivambaku/fuufu-app/handlers"
+	handler "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/handlers"
 )
 
 func main() {

@@ -1,8 +1,8 @@
 package handler
 
 import (
-	model "github.com/shivambaku/fuufu-app/models"
-	user "github.com/shivambaku/fuufu-app/views/users"
+	model "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/models"
+	user "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/users"
 
 	"github.com/labstack/echo"
 )

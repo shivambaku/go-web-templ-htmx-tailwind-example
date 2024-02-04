@@ -1,4 +1,4 @@
-module github.com/shivambaku/fuufu-app
+module github.com/shivambaku/go-web-templ-htmx-tailwind-demo
 
 go 1.21.6
 

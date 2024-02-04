@@ -28,6 +28,6 @@ func main() {
 func routes(e *echo.Echo) {
 	e.Static("/", "assets")
 
-	e.GET("/", handler.HandlerRecords)
-	e.GET("/user", handler.HandlerUserShow)
+	e.GET("/", handler.HandlerUserShow)
+	e.GET("/user", handler.HandlerUserGet)
 }

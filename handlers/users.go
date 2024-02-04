@@ -13,3 +13,10 @@ func HandlerUserShow(c echo.Context) error {
 	}
 	return view(c, user.Show(u))
 }
+
+func HandlerUserGet(c echo.Context) error {
+	u := model.User{
+		Email: "test@example.com",
+	}
+	return c.JSON(200, u)
+}

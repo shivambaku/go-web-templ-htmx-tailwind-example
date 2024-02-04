@@ -5,8 +5,13 @@ import (
 	"github.com/shivambaku/fuufu-app/models"
 )
 
+script click(user model.User) {
+	alert("Hello, " + user.Email + "!")
+}
+
 templ Show(user model.User) {
 	@layout.Default() {
 		<h1>Hello, { user.Email } !</h1>
+		<button onclick={ click(user) }>Click me!</button>
 	}
 }

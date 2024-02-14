@@ -11,8 +11,8 @@ import "io"
 import "bytes"
 
 import (
-	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/layouts"
 	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/models"
+	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/layouts"
 )
 
 func click(user model.User) templ.ComponentScript {

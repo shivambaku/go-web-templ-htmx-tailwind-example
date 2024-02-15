@@ -2,16 +2,11 @@ package user
 
 import (
 	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/layouts"
-	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/models"
+	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/internal/database"
 )
 
-script click(user model.User) {
-	alert("Hello, " + user.Email + "!")
-}
-
-templ Show(user model.User) {
+templ Info(user database.User) {
 	@layout.Default() {
-		<h1>Hello, { user.Email } !</h1>
-		<button onclick={ click(user) }>Click me!</button>
+		<h1>Hello, { user.Username } !</h1>
 	}
 }

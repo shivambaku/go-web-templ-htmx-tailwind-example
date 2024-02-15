@@ -1,13 +1,20 @@
 package main
 
 import (
+	"database/sql"
 	"log"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
-	"github.com/labstack/echo"
-	handler "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/handlers"
+	_ "github.com/lib/pq"
+	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/internal/database"
 )
+
+type server struct {
+	DB *database.Queries
+}
 
 func main() {
 	err := godotenv.Load()
@@ -20,14 +27,28 @@ func main() {
 		log.Fatal("PORT environment variable must be set")
 	}
 
-	e := echo.New()
-	routes(e)
-	e.Logger.Fatal(e.Start(":" + port))
-}
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		log.Fatal("DATABASE_URL environment variable must be set")
+	}
 
-func routes(e *echo.Echo) {
-	e.Static("/", "assets")
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("Error opening database: %s", err)
+	}
 
-	e.GET("/", handler.HandlerUserShow)
-	e.GET("/user", handler.HandlerUserGet)
+	s := server{
+		DB: database.New(db),
+	}
+
+	handler := s.routes()
+
+	srv := &http.Server{
+		Addr:              ":" + port,
+		Handler:           handler,
+		ReadHeaderTimeout: 2 * time.Second,
+	}
+
+	log.Printf("Serving on port: %s\n", port)
+	log.Fatal(srv.ListenAndServe())
 }

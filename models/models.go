@@ -1,15 +1,14 @@
 package model
 
-import "time"
+import (
+	"time"
 
-type User struct {
-	Email string
-}
+	"github.com/google/uuid"
+)
 
-type CreateAnimeRecord struct {
-	Title    string
-	Started  time.Time
-	Finished time.Time
-	Rating   float32
-	Memo     string
+type UserDTO struct {
+	ID        uuid.UUID `json:"id"`
+	UserName  string    `json:"username"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

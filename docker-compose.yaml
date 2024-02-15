@@ -7,8 +7,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: devdb
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
 volumes:

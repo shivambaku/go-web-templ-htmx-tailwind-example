@@ -1,17 +1,12 @@
-package main
+package handler
 
 import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	handler "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/handlers"
 )
 
-func (s *server) routes() *chi.Mux {
-	handler := handler.Handler{
-		DB: s.DB,
-	}
-
+func (h *Handler) Routes() *chi.Mux {
 	router := chi.NewRouter()
 
 	// Static files
@@ -19,12 +14,15 @@ func (s *server) routes() *chi.Mux {
 	router.Handle("/static/*", http.StripPrefix("/static/", fs))
 
 	// View routes
-	router.Get("/", handler.HandlerUserInfo)
+	router.Get("/", h.handlerUsersInfo)
+
+	// Non API routes
+	router.Post("/login", h.handlerLogin)
 
 	// API routes
 	apiRouter := chi.NewRouter()
-	apiRouter.Post("/users", handler.HandlerUserCreate)
-
+	apiRouter.Post("/users", h.handlerUsersCreate)
+	apiRouter.Get("/users/me", h.middlewareAuth(h.handlerUsersGet))
 	router.Mount("/api", apiRouter)
 
 	return router

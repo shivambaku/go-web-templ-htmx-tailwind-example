@@ -9,12 +9,9 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	handler "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/handlers"
 	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/internal/database"
 )
-
-type server struct {
-	DB *database.Queries
-}
 
 func main() {
 	err := godotenv.Load()
@@ -27,6 +24,11 @@ func main() {
 		log.Fatal("PORT environment variable must be set")
 	}
 
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		log.Fatal("JWT_SECRET environment variable must be set")
+	}
+
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		log.Fatal("DATABASE_URL environment variable must be set")
@@ -37,15 +39,14 @@ func main() {
 		log.Fatalf("Error opening database: %s", err)
 	}
 
-	s := server{
-		DB: database.New(db),
+	h := handler.Handler{
+		DB:        database.New(db),
+		JWTSecret: jwtSecret,
 	}
-
-	handler := s.routes()
 
 	srv := &http.Server{
 		Addr:              ":" + port,
-		Handler:           handler,
+		Handler:           h.Routes(),
 		ReadHeaderTimeout: 2 * time.Second,
 	}
 

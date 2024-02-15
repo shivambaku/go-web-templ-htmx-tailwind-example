@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -34,7 +34,7 @@ func ValidatePasswordHash(password, hash string) error {
 }
 
 func MakeJWT(
-	userID int,
+	userID uuid.UUID,
 	tokenSecret string,
 	expiresIn time.Duration,
 	tokenType TokenType,
@@ -44,7 +44,7 @@ func MakeJWT(
 		Issuer:    string(tokenType),
 		IssuedAt:  jwt.NewNumericDate(time.Now()),
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(expiresIn)),
-		Subject:   fmt.Sprintf("%d", userID),
+		Subject:   userID.String(),
 	})
 	return token.SignedString(signingKey)
 }
@@ -76,50 +76,6 @@ func ValidateJWT(tokenString, tokenSecret string) (string, error) {
 	}
 
 	return userIDString, nil
-}
-
-func RefreshToken(tokenString, tokenSecret string) (string, error) {
-	claimsStruct := jwt.RegisteredClaims{}
-	token, err := jwt.ParseWithClaims(
-		tokenString,
-		&claimsStruct,
-		func(token *jwt.Token) (interface{}, error) {
-			return []byte(tokenSecret), nil
-		},
-	)
-	if err != nil {
-		return "", err
-	}
-
-	userIDString, err := token.Claims.GetSubject()
-	if err != nil {
-		return "", err
-	}
-
-	issuer, err := token.Claims.GetIssuer()
-	if err != nil {
-		return "", err
-	}
-	if issuer != string(TokenTypeRefresh) {
-		return "", errors.New("invalid issuer")
-	}
-
-	userID, err := strconv.Atoi(userIDString)
-	if err != nil {
-		return "", err
-	}
-
-	newToken, err := MakeJWT(
-		userID,
-		tokenSecret,
-		time.Hour,
-		TokenTypeAccess,
-	)
-	if err != nil {
-		return "", err
-	}
-
-	return newToken, nil
 }
 
 func GetBearerToken(headers http.Header) (string, error) {

@@ -13,7 +13,13 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-insert into users (id, username, hashed_password, created_at, updated_at)
+insert into users (
+        id,
+        username,
+        hashed_password,
+        created_at,
+        updated_at
+    )
 values ($1, $2, $3, $4, $5)
 returning id, username, hashed_password, created_at, updated_at
 `
@@ -45,8 +51,29 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
+const getUserById = `-- name: GetUserById :one
+select id, username, hashed_password, created_at, updated_at
+from users
+where id = $1
+`
+
+func (q *Queries) GetUserById(ctx context.Context, id uuid.UUID) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserById, id)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.HashedPassword,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const getUserByUsername = `-- name: GetUserByUsername :one
-select id, username, hashed_password, created_at, updated_at from users where username = $1
+select id, username, hashed_password, created_at, updated_at
+from users
+where username = $1
 `
 
 func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {

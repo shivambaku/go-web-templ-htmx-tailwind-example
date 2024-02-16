@@ -10,8 +10,7 @@ import (
 )
 
 type Handler struct {
-	DB        *database.Queries
-	JWTSecret string
+	DB *database.Queries
 }
 
 func response(w http.ResponseWriter, code int, data []byte) {

@@ -14,10 +14,10 @@ templ:
 tailwind:
 	@npx tailwindcss -i ./assets/css/tailwind.css -o ./assets/dist/styles.css --minify
 
-devdb:
+db:
 	@docker-compose up -d postgres-dev
 
-devdb-down:
+db-down:
 	@docker-compose down
 
 sqlc:

@@ -24,11 +24,6 @@ func main() {
 		log.Fatal("PORT environment variable must be set")
 	}
 
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		log.Fatal("JWT_SECRET environment variable must be set")
-	}
-
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		log.Fatal("DATABASE_URL environment variable must be set")
@@ -40,8 +35,7 @@ func main() {
 	}
 
 	h := handler.Handler{
-		DB:        database.New(db),
-		JWTSecret: jwtSecret,
+		DB: database.New(db),
 	}
 
 	srv := &http.Server{

@@ -13,13 +13,13 @@ func (h *Handler) middlewareAuth(handler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		sessionToken, err := auth.GetSessionToken(r)
 		if err != nil {
-			responseError(w, http.StatusUnauthorized, "No session token")
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 
 		userID, err := auth.GetSessionUserId(sessionToken)
 		if err != nil {
-			responseError(w, http.StatusUnauthorized, "Invalid session token")
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 

@@ -29,9 +29,13 @@ func SetSessionToken(w http.ResponseWriter, userId uuid.UUID, expiresIn time.Dur
 	sessions[sessionToken] = session{userId, expiresAt}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:    "session_token",
-		Value:   sessionToken,
-		Expires: expiresAt,
+		Name:     "session_token",
+		Value:    sessionToken,
+		Expires:  expiresAt,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+		Path:     "/",
 	})
 }
 

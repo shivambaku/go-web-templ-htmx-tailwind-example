@@ -1,0 +1,19 @@
+package page
+
+import "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/layouts"
+
+templ Login() {
+	@layout.Default() {
+		<form>
+			<div>
+				<label for="username">Username:</label>
+				<input type="text" name="username" maxlength="25"/>
+			</div>
+			<div>
+				<label for="password">Password:</label>
+				<input type="password" name="password" maxlength="25"/>
+			</div>
+			<button type="submit" hx-post="/auth/login" hx-swap="none">Login</button>
+		</form>
+	}
+}

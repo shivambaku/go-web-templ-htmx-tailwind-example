@@ -1,12 +1,16 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 
 	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/internal/auth"
+	page "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/pages"
 )
+
+func (h *Handler) handlerLoginView(w http.ResponseWriter, r *http.Request) {
+	responseView(w, r, page.Login())
+}
 
 func (h *Handler) handlerLogin(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
@@ -14,17 +18,14 @@ func (h *Handler) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		Password string `json:"password"`
 	}
 
-	decoder := json.NewDecoder(r.Body)
-	params := parameters{}
-	err := decoder.Decode(&params)
-	if err != nil {
-		responseError(w, http.StatusInternalServerError, "Couldn't decode parameters")
-		return
+	params := parameters{
+		Username: r.FormValue("username"),
+		Password: r.FormValue("password"),
 	}
 
 	user, err := h.DB.GetUserByUsername(r.Context(), params.Username)
 	if err != nil {
-		responseError(w, http.StatusInternalServerError, "Couldn't get user")
+		responseError(w, http.StatusUnauthorized, "Couldn't find user")
 		return
 	}
 

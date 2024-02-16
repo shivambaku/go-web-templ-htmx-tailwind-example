@@ -10,16 +10,19 @@ func (h *Handler) Routes() *chi.Mux {
 	router := chi.NewRouter()
 
 	// Static files
-	fs := http.FileServer(http.Dir("static"))
-	router.Handle("/static/*", http.StripPrefix("/static/", fs))
+	fs := http.FileServer(http.Dir("assets"))
+	router.Handle("/assets/*", http.StripPrefix("/assets/", fs))
 
 	// View routes
-	router.Get("/", h.handlerUsersInfo)
+	router.Get("/", h.middlewareAuth(h.handlerUsersInfoView))
+	router.Get("/login", h.handlerLoginView)
 
-	// Non API routes
-	router.Post("/login", h.handlerLogin)
-	router.Post("/logout", h.handlerLogout)
-	router.Post("/refresh", h.handlerRefresh)
+	// Auth routes
+	authRouter := chi.NewRouter()
+	authRouter.Post("/login", h.handlerLogin)
+	authRouter.Post("/logout", h.handlerLogout)
+	authRouter.Post("/refresh", h.handlerRefresh)
+	router.Mount("/auth", authRouter)
 
 	// API routes
 	apiRouter := chi.NewRouter()

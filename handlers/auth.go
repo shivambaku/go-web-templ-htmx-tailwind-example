@@ -14,11 +14,6 @@ func (h *Handler) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		Password string `json:"password"`
 	}
 
-	type response struct {
-		Username string `json:"username"`
-		Token    string `json:"token"`
-	}
-
 	decoder := json.NewDecoder(r.Body)
 	params := parameters{}
 	err := decoder.Decode(&params)
@@ -39,19 +34,21 @@ func (h *Handler) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accessToken, err := auth.MakeJWT(
-		user.ID,
-		h.JWTSecret,
-		time.Hour*24,
-		auth.TokenTypeAccess,
-	)
+	auth.SetSessionToken(w, user.ID, time.Hour*24)
+}
+
+func (h *Handler) handlerLogout(w http.ResponseWriter, r *http.Request) {
+	err := auth.ClearSessionToken(w, r)
 	if err != nil {
-		responseError(w, http.StatusInternalServerError, "Couldn't make access token")
+		responseError(w, http.StatusBadRequest, "Couldn't clear session token")
 		return
 	}
+}
 
-	responseJSON(w, http.StatusOK, response{
-		Username: user.Username,
-		Token:    accessToken,
-	})
+func (h *Handler) handlerRefresh(w http.ResponseWriter, r *http.Request) {
+	err := auth.RefreshSessionToken(w, r, time.Hour*24)
+	if err != nil {
+		responseError(w, http.StatusUnauthorized, "Couldn't refresh session token")
+		return
+	}
 }

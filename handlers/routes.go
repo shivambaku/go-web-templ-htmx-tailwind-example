@@ -18,6 +18,8 @@ func (h *Handler) Routes() *chi.Mux {
 
 	// Non API routes
 	router.Post("/login", h.handlerLogin)
+	router.Post("/logout", h.handlerLogout)
+	router.Post("/refresh", h.handlerRefresh)
 
 	// API routes
 	apiRouter := chi.NewRouter()

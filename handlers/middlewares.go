@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 
-	"github.com/google/uuid"
 	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/internal/auth"
 	"github.com/shivambaku/go-web-templ-htmx-tailwind-demo/internal/database"
 )
@@ -12,21 +11,15 @@ type authedHandler func(http.ResponseWriter, *http.Request, database.User)
 
 func (h *Handler) middlewareAuth(handler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token, err := auth.GetBearerToken(r.Header)
+		sessionToken, err := auth.GetSessionToken(r)
 		if err != nil {
-			responseError(w, http.StatusUnauthorized, "Couldn't find JWT")
+			responseError(w, http.StatusUnauthorized, "No session token")
 			return
 		}
 
-		userIDStr, err := auth.ValidateJWT(token, h.JWTSecret)
+		userID, err := auth.GetSessionUserId(sessionToken)
 		if err != nil {
-			responseError(w, http.StatusUnauthorized, "Couldn't validate JWT")
-			return
-		}
-
-		userID, err := uuid.Parse(userIDStr)
-		if err != nil {
-			responseError(w, http.StatusUnauthorized, "Couldn't parse user ID")
+			responseError(w, http.StatusUnauthorized, "Invalid session token")
 			return
 		}
 

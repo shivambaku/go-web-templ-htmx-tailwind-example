@@ -1,3 +1,5 @@
+include .env
+
 run: build
 	@./tmp/main
 
@@ -23,11 +25,11 @@ db-down:
 sqlc:
 	@sqlc generate
 
-migrate: 
-	@atlas migrate apply --dir "file://sql/migrations" --url "postgres://postgres:postgres@localhost:5432/devdb?sslmode=disable"
-
 migrate-diff: sqlc
 	@atlas migrate diff --dir "file://sql/migrations" --to "file://sql/schema.sql" --dev-url "docker://postgres/16/dev?search_path=public"
+
+migrate-apply: 
+	@atlas migrate apply --dir "file://sql/migrations" --url ${DATABASE_URL}
 
 lint:
 	@golangci-lint run

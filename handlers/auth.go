@@ -8,11 +8,11 @@ import (
 	page "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/pages"
 )
 
-func (h *Handler) handlerLoginView(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlerLoginView(w http.ResponseWriter, r *http.Request) {
 	responseView(w, r, page.Login())
 }
 
-func (h *Handler) handlerLogin(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -38,7 +38,7 @@ func (h *Handler) handlerLogin(w http.ResponseWriter, r *http.Request) {
 	auth.SetSessionToken(w, user.ID, time.Hour*24)
 }
 
-func (h *Handler) handlerLogout(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlerLogout(w http.ResponseWriter, r *http.Request) {
 	err := auth.ClearSessionToken(w, r)
 	if err != nil {
 		responseError(w, http.StatusBadRequest, "Couldn't clear session token")
@@ -46,7 +46,7 @@ func (h *Handler) handlerLogout(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) handlerRefresh(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlerRefresh(w http.ResponseWriter, r *http.Request) {
 	err := auth.RefreshSessionToken(w, r, time.Hour*24)
 	if err != nil {
 		responseError(w, http.StatusUnauthorized, "Couldn't refresh session token")

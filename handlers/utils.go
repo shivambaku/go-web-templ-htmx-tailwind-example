@@ -46,5 +46,7 @@ func responseError(w http.ResponseWriter, code int, message string) {
 }
 
 func responseView(w http.ResponseWriter, r *http.Request, component templ.Component) {
-	component.Render(r.Context(), w)
+	if err := component.Render(r.Context(), w); err != nil {
+		responseError(w, http.StatusInternalServerError, "Error rendering view")
+	}
 }

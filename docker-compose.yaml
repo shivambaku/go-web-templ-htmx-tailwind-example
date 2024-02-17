@@ -6,7 +6,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: devdb
+      POSTGRES_DB: go-web-demo-dev-dev
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:

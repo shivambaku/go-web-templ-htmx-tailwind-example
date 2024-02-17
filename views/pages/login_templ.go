@@ -31,7 +31,7 @@ func Login() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form><div><label for=\"username\">Username:</label> <input type=\"text\" name=\"username\" maxlength=\"25\"></div><div><label for=\"password\">Password:</label> <input type=\"password\" name=\"password\" maxlength=\"25\"></div><button type=\"submit\" hx-post=\"/auth/login\" hx-swap=\"none\">Login</button></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form class=\"mt-10 max-w-sm mx-auto\"><div class=\"mb-4\"><label for=\"username\" class=\"block\">Username:</label> <input type=\"text\" name=\"username\" maxlength=\"25\" class=\"w-full border border-gray-300 rounded-md px-3 py-2\"></div><div class=\"mb-4\"><label for=\"password\" class=\"block\">Password:</label> <input type=\"password\" name=\"password\" maxlength=\"25\" class=\"w-full border border-gray-300 rounded-md px-3 py-2\"></div><button type=\"submit\" hx-post=\"/auth/login\" hx-swap=\"none\" class=\"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded\">Login</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

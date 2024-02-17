@@ -12,15 +12,7 @@ import (
 	page "github.com/shivambaku/go-web-templ-htmx-tailwind-demo/views/pages"
 )
 
-func (h *Handler) handlerUsersInfoView(w http.ResponseWriter, r *http.Request, user database.User) {
-	responseView(w, r, page.Info(user))
-}
-
-func (h *Handler) handlerUsersGet(w http.ResponseWriter, r *http.Request, user database.User) {
-	responseJSON(w, http.StatusOK, model.UserToUserDTO(&user))
-}
-
-func (h *Handler) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -52,4 +44,12 @@ func (h *Handler) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseJSON(w, http.StatusCreated, model.UserToUserDTO(&user))
+}
+
+func (h *Handler) HandlerUsersGet(w http.ResponseWriter, r *http.Request, user database.User) {
+	responseJSON(w, http.StatusOK, model.UserToUserDTO(&user))
+}
+
+func (h *Handler) HandlerUsersInfoView(w http.ResponseWriter, r *http.Request, user database.User) {
+	responseView(w, r, page.Info(user))
 }

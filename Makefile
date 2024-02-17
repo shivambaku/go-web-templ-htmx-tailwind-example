@@ -28,7 +28,7 @@ sqlc:
 migrate-diff: sqlc
 	@atlas migrate diff --dir "file://sql/migrations" --to "file://sql/schema.sql" --dev-url "docker://postgres/16/dev?search_path=public"
 
-migrate-apply: 
+migrate-apply: migrate-diff
 	@atlas migrate apply --dir "file://sql/migrations" --url ${DATABASE_URL}
 
 lint:

@@ -1,6 +1,6 @@
 include .env
 
-run: build
+run: build db
 	@./tmp/main
 
 watch:

@@ -1,7 +1,5 @@
 package database
 
-// run sql file in the database
-
 import (
 	"database/sql"
 	"fmt"
